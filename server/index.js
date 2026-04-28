@@ -9,7 +9,13 @@ const flagRoutes = require('./routes/flags');
 const app = express();
 
 // ── Middleware ──────────────────────────────────────────────
-app.use(cors());
+// In production set CORS_ORIGIN to your Vercel frontend URL
+// e.g. CORS_ORIGIN=https://sport-shield.vercel.app
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json());
 
 // ── Routes ──────────────────────────────────────────────────

@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+// In production (Vercel), set VITE_API_URL to your deployed backend URL.
+// Example: https://your-sportshield-api.railway.app
+// In local dev, falls back to '/api' which Vite proxies to localhost:5000
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: { 'Content-Type': 'application/json' },
 });
 
