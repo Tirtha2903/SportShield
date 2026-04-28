@@ -135,12 +135,17 @@ const MOCK_FLAG_STATS = {
 async function withFallback(apiFn, mockData) {
   try {
     const res = await apiFn();
+    // Vercel SPA rewrite returns index.html (200) for unknown paths —
+    // detect that and treat it as a missing backend.
+    if (typeof res.data === 'string') {
+      return { data: mockData };
+    }
     return res;
   } catch {
-    // Return in the same shape as axios response
     return { data: mockData };
   }
 }
+
 
 // ── Assets ──────────────────────────────────────────────────
 export const getAssets     = ()         => withFallback(() => api.get('/assets'),              MOCK_ASSETS);
